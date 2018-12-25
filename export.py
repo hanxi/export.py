@@ -40,7 +40,6 @@ KIND_GLOBAL = "global"
 TARGET_TYPE_PYTHON = ".py"
 TARGET_TYPE_JSON   = ".json"
 TARGET_TYPE_LUA    = ".lua"
-TARGET_TYPE_CSHARP = ".cs"
 
 def ToPy(pyDict):
     pyDictStr = pprint.pformat(pyDict, indent = 4)
@@ -92,14 +91,10 @@ def ToLua(pyDict):
     return outStr
 
 
-def ToCSharp(pyDict):
-    return "TODO:ToCSharp"
-
 SUPPORT_TARGET_TYPE = {
     TARGET_TYPE_PYTHON: ToPy,
     TARGET_TYPE_JSON: ToJson,
     TARGET_TYPE_LUA: ToLua,
-    TARGET_TYPE_CSHARP: ToCSharp,
 }
 
 
@@ -342,7 +337,7 @@ class Context:
     Arguments
     -f      : input excel file.
     -s      : the excel file's sheet name.
-    -t      : out file, support suffix: py,json,lua,cs.
+    -t      : out file, support suffix: py,json,lua.
 
     Options
     -h      : print this help message and exit.
@@ -388,7 +383,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     if context.targetType not in SUPPORT_TARGET_TYPE:
-        print("Not support export target file type:'%s', only support: py,json,lua,cs" % context.targetType)
+        print("Not support export target file type:'%s', only support: py,json,lua" % context.targetType)
         sys.exit(2)
 
     Export(context)
