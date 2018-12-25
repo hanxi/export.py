@@ -22,3 +22,8 @@ os.system(cmd)
 cmd="python3 ../export.py -f ./hero.xlsx -s 全局参数 -t ./global_data.json -k global"
 os.system(cmd)
 
+cmd="python3 ../export.py -f ./hero.xlsx -s 英雄 -t ./hero_data.lua"
+os.system(cmd)
+
+cmd="python3 ../export.py -f ./hero.xlsx -s 全局参数 -t ./global_data.lua -k global"
+os.system(cmd)

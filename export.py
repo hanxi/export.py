@@ -52,8 +52,45 @@ def GetData():
 def ToJson(pyDict):
     return json.dumps(pyDict, sort_keys = True, indent = 4, ensure_ascii = False)
 
+def _NewLine(count):
+  return '\n' + '    ' * count
+
+def _ToLua(out, obj, indent = 1):
+    if isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, str):
+        out.append(json.dumps(obj, ensure_ascii = False))
+    else:
+        isList = isinstance(obj, list)
+        out.append('{')
+        isFirst = True
+        for i in obj:
+            if isFirst:
+                isFirst = False
+            else:
+                out.append(',')
+            out.append(_NewLine(indent))
+            if not isList:
+                k = i
+                i = obj[k]
+                out.append('[')
+                if isinstance(k, int) or isinstance(k, float):
+                    out.append(str(k))
+                else:
+                    out.append('"')
+                    out.append(str(k))
+                    out.append('"')
+                out.append(']')
+                out.append(' = ')
+            _ToLua(out, i, indent + 1)
+        out.append(_NewLine(indent - 1))
+        out.append('}')
+
 def ToLua(pyDict):
-    return "TODO:ToLua"
+    out = []
+    _ToLua(out, pyDict)
+    luaStr = "".join(out)
+    outStr = 'return %s' % luaStr
+    return outStr
+
 
 def ToCSharp(pyDict):
     return "TODO:ToCSharp"
