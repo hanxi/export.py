@@ -2,6 +2,8 @@
 
 Export excel to Python/Json/Lua
 
+参考 https://github.com/yanghuan/proton
+
 ## Excel 文件格式
 
 ### 1. 通用格式
