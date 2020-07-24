@@ -170,7 +170,7 @@ class NormalExporter(Exporter):
     def ReadHead(self):
         # first 4 row is head
         if self.sheet.nrows < 4:
-            print("Maybe not right shee:%s" % self.context.sheetName)
+            print("Maybe not right sheet:%s" % self.context.sheetName)
             sys.exit(6)
 
         descriptions = self.sheet.row_values(0)
@@ -183,11 +183,11 @@ class NormalExporter(Exporter):
             for colIndex in range(self.sheet.ncols):
                 valueType = str(valueTypes[colIndex]).strip()
                 name = str(names[colIndex]).strip()
-                outTypeMatch = IsOutTypeMatch(str(outTypes[colIndex]).strip(), self.context.outType)
+                outTypeMatch = IsOutTypeMatch(str(outTypes[colIndex]).strip(), self.context.outType.strip())
 
                 if self.CheckValueType(valueType, name):
-                    print("In %s, Unknow valueType:%s,name:%s" % (self.context.sheetName, valueType, name))
-                    sys.exit(5)
+                    print("In %s, Ignore unknow valueType:%s,name:%s" % (self.context.sheetName, valueType, name))
+                    outTypeMatch = false
 
                 self.headInfos.append((valueType, name, outTypeMatch))
 
@@ -213,7 +213,7 @@ class NormalExporter(Exporter):
         if not len(self.headInfos):
             return
         for i in self.headInfos:
-            if not i[0] or not i[1] or not i[2]:
+            if not i[0] or not i[1]:
                 return
             pass
 
