@@ -99,10 +99,12 @@ SUPPORT_TARGET_TYPE = {
 
 
 FORMAT_FUNC = {
-    "str": lambda v: v,
+    "str": lambda v: str(v),
     "int": lambda v: int(float(v)),
     "arrstr": lambda v: [ i.strip() for i in v.split(',') ],
     "arrint": lambda v: [ int(float(i.strip())) for i in v.split(',') ],
+    "list": lambda v: eval(v),
+    "dict": lambda v: eval(v),
 }
 
 class Exporter:
