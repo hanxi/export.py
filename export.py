@@ -140,7 +140,10 @@ class Exporter:
             sys.exit(5)
 
         formatFunc = FORMAT_FUNC[valueType]
-        return formatFunc(value)
+        try:
+            return formatFunc(value)
+        except Exception as e:
+            return None
 
     def CheckValueType(self, valueType, name):
         if valueType in FORMAT_FUNC:
@@ -198,16 +201,22 @@ class NormalExporter(Exporter):
             raise e
         pass
 
-    def GetSheetValue(self, row, colIndex):
+    def GetSheetValue(self, rowIndex, colIndex):
         outTypeMatch = self.headInfos[colIndex][2]
         if not outTypeMatch:
             return None
 
         valueType = self.headInfos[colIndex][0]
         name = self.headInfos[colIndex][1]
-        value = str(row[colIndex]).strip()
 
-        if valueType and name and value:
+        value = self.sheet.cell_value(rowIndex, colIndex)
+        vtype = self.sheet.cell_type(rowIndex, colIndex)
+        if vtype == xlrd.XL_CELL_NUMBER:
+            value = int(value)
+        else:
+            value = str(value).strip()
+
+        if valueType and name:
             return self.FormatValue(value, valueType, name)
         return None
 
@@ -233,9 +242,9 @@ class NormalExporter(Exporter):
                 print("%s skip line: %d" % (self.sheet.name, rowIndex + 1))
                 continue
 
-            key = self.GetSheetValue(row, 0)
+            key = self.GetSheetValue(rowIndex, 0)
             for colIndex in range(1, self.sheet.ncols):
-                value = self.GetSheetValue(row, colIndex)
+                value = self.GetSheetValue(rowIndex, colIndex)
                 if value is None:
                     continue
 
