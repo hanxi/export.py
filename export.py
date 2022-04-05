@@ -244,6 +244,9 @@ class NormalExporter(Exporter):
                 continue
 
             key = self.GetSheetValue(rowIndex, 0)
+            if key == None:
+                continue
+
             for colIndex in range(1, self.sheet.ncols):
                 value = self.GetSheetValue(rowIndex, colIndex)
                 if value is None:
