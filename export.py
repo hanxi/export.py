@@ -142,7 +142,7 @@ class Exporter:
         formatFunc = FORMAT_FUNC[valueType]
         try:
             return formatFunc(value)
-        except Exception as e:
+        except:
             return None
 
     def CheckValueType(self, valueType, name):
@@ -212,6 +212,7 @@ class NormalExporter(Exporter):
         value = self.sheet.cell_value(rowIndex, colIndex)
         vtype = self.sheet.cell_type(rowIndex, colIndex)
         if vtype == xlrd.XL_CELL_NUMBER:
+            # if want support float value, need change here.
             value = int(value)
         else:
             value = str(value).strip()
