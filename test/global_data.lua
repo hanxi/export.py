@@ -1,6 +1,6 @@
 return {
-    ["NameLimit"] = 7,
     ["HitCorrection"] = 1,
+    ["NameLimit"] = 7,
     ["InitItem"] = {
         1001,
         1002,

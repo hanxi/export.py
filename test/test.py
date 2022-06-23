@@ -27,3 +27,13 @@ os.system(cmd)
 
 cmd="python3 ../export.py -f ./hero.xlsx -s 全局参数 -t ./global_data.lua -k global"
 os.system(cmd)
+
+cmd="python3 ../export.py -f ./test.xlsx -l"
+sheet_names_str = os.popen(cmd).read()
+sheet_names = sheet_names_str.split('\n')
+for sheet_name in sheet_names:
+    if len(sheet_name) > 0:
+        print(sheet_name)
+        cmd="python3 ../export.py -f ./test.xlsx -s %s -t ./%s.lua" % (sheet_name, sheet_name)
+        os.system(cmd)
+

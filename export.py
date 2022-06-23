@@ -358,9 +358,11 @@ class Context:
     -h      : print this help message and exit.
     -k      : kind of excel sheet, support: normal[default],global.
     -o      : export out type, support: server,client, default out all.
+    -l      : list excel all sheet names.
 
     Example
     python3 export.py -f hero.xlsx -s heroAttr -t hero.py
+    python3 export.py -f hero.xlsx -l
 
     https://github.com/hanxi/export.py''')
 
@@ -368,11 +370,19 @@ class Context:
         filename, extension = os.path.splitext(self.targetFile)
         self.targetType = extension
 
+    def ListSheet(self):
+        if not self.excelFile:
+            self.Usage()
+            sys.exit(1)
+
+        book = xlrd.open_workbook(self.excelFile)
+        print("\n".join(book.sheet_names()))
+
 if __name__ == '__main__':
     context = Context()
 
     try:
-        opst, args = getopt.getopt(sys.argv[1:], 'f:s:t:hk:o:')
+        opst, args = getopt.getopt(sys.argv[1:], 'f:s:t:lhk:o:')
     except:
         context.Usage()
         sys.exit(1)
@@ -392,6 +402,9 @@ if __name__ == '__main__':
             context.kind = v
         elif op == '-o':
             context.outType = v
+        elif op == '-l':
+            context.ListSheet()
+            sys.exit(0)
 
     if not context.excelFile:
         context.Usage()
